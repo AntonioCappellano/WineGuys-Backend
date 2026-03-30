@@ -1,11 +1,9 @@
 const express = require("express");
 const app = express();
-const port = 3000;
-const appUrl = `http://localhost:${port}/`;
+
 
 
 // imports 
-const notFound = require("./middlewares/notFound");
 const winesRouter = require("./Routers/wines");
 
 
@@ -17,6 +15,8 @@ app.use(cors({ origin: "http://localhost:5173"}));
 app.use(express.json());
 
 
+// Routers
+app.use("/vini", winesRouter);
 
 // Error Handling
 const errorMiddlewares = require("./middlewares/errorsHandler");
@@ -24,8 +24,6 @@ app.use(errorMiddlewares.error404);
 app.use(errorMiddlewares.error500);
 
 
-// Routers
-app.use("/wines", winesRouter);
 
 
 
