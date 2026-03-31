@@ -12,17 +12,17 @@ const winesRouter = require("./Routers/wines");
 const cors = require("cors");
 app.use(express.static("public"));
 app.use(cors({ origin: "http://localhost:5173" }));
-
 app.use(express.json());
+
+// Routers
+app.use("/wines", winesRouter);
 
 // Error Handling
 const errorMiddlewares = require("./middlewares/errorsHandler");
 app.use(errorMiddlewares.error404);
 app.use(errorMiddlewares.error500);
 
-// Routers
-app.use("/wines", winesRouter);
-
+// app.listen
 app.listen(process.env.APP_PORT, () => {
   console.log(
     "server listening on " + process.env.APP_URL + ":" + process.env.APP_PORT
