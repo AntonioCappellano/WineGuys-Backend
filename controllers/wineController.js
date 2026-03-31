@@ -109,7 +109,12 @@ const show = (req, res) => {
   const { slug } = req.params;
 
   // query che cerca il prodotto tramite slug
-  const sql = "SELECT * FROM products WHERE slug = ?";
+  const sql = `
+    SELECT *, 
+    CONCAT('http://localhost:3000/wines/', img) AS img_url 
+    FROM products 
+    WHERE slug = ?
+  `;
 
   // esegue la query sul database
   connection.query(sql, [slug], (err, results) => {
