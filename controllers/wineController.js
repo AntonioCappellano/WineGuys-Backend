@@ -24,7 +24,23 @@ const index = (req, res) => {
 };
 
 const show = (req, res) => {
-  res.json({ message: "Dettaglio vino" });
+  // prende lo slug dall'url
+  const { slug } = req.params;
+
+  // query che cerca il prodotto tramite slug
+  const sql = "SELECT * FROM products WHERE slug = ?";
+
+  // esegue la query sul database
+  connection.query(sql, [slug], (err, results) => {
+    // se c'è un errore lo manda al client
+    if (err) return handleFailQuery(err, res);
+    // prende il primo riusltato
+    const wine = results[0];
+    // se non trova il vino manda 404
+    if (!wine) return handleResourceNotFound(res);
+    // se va bene manda il risultato al client
+    res.json({ result: wine });
+  });
 };
 
 const store = (req, res) => {
