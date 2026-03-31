@@ -2,8 +2,11 @@ const express = require("express");
 const router = express.Router();
 const wineController = require("../controllers/wineController");
 
-// INDEX
+// INDEX - tutti i vini senza categorie
 router.get("/", wineController.index);
+
+// INDEX - tutti i vini con categorie
+router.get("/vini", wineController.indexWithCategories);
 
 // SHOW
 router.get("/:slug", wineController.show);

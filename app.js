@@ -13,7 +13,7 @@ app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
 // Routers
-app.use("/vini", winesRouter);
+app.use("/", winesRouter);
 app.use("/orders", ordersRouter);
 
 // Error Handling

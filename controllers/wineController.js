@@ -4,8 +4,19 @@ const connection = require("../connections/connDb");
 // importa le funzioni di utilità per gestire gli errori
 const { handleFailQuery, handleResourceNotFound } = require("../utils/dbUtils");
 
-// INDEX - ritorna tutti i vini colla loro categoria
+// INDEX - ritorna tutti in vini senza categorie
 const index = (req, res) => {
+  const sql = `SELECT * FROM products`;
+
+  // esegue la query sul database
+  connection.query(sql, (err, results) => {
+    if (err) return handleFailQuery(err, res);
+    res.json(results);
+  });
+};
+
+// INDEX - ritorna tutti i vini colla loro categoria
+const indexWithCategories = (req, res) => {
   // query che prende tutti i prodotti e fa JOIN conlle categorie
   const sql = `
    SELECT p.*, c.category_name
@@ -47,4 +58,4 @@ const store = (req, res) => {
   res.json({ message: "Vino aggiunto" });
 };
 
-module.exports = { index, show, store };
+module.exports = { index, indexWithCategories, show, store };
