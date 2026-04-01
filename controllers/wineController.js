@@ -15,7 +15,7 @@ const index = (req, res) => {
   });
 };
 
-// INDEX - Cateforia Vini in promo
+// INDEX - Categoria Vini in promo
 const indexPromo = (req, res) => {
   // query che prende tutti i prodotti e fa JOIN conlle categorie
   const sql = `
@@ -129,11 +129,8 @@ const show = (req, res) => {
   });
 };
 
-
-
 const searchSql = (req, res) => {
   const { search, type, winery, grape, minPrice, maxPrice } = req.query;
-
 
   //mando direttamente il prezzo finale gia calcolato
 
@@ -162,7 +159,7 @@ const searchSql = (req, res) => {
       searchTerm, //description
       searchTerm, //winery
       searchTerm, //grape
-    ); 
+    );
   }
 
   // filtro tipo (rosso, bianco, ecc.)

@@ -17,10 +17,10 @@ router.get("/piuvenduti", wineController.indexPiuVenduti);
 // INDEX - categoria primavera
 router.get("/primavera", wineController.indexPrimavera);
 
-// SHOW
-router.get("/:slug", wineController.show);
-
 // SEARCH
 router.get("/search", wineController.searchSql);
+
+// SHOW
+router.get("/:slug", wineController.show);
 
 module.exports = router;
