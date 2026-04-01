@@ -125,7 +125,16 @@ const show = (req, res) => {
     // se non trova il vino manda 404
     if (!wine) return handleResourceNotFound(res);
     // se va bene manda il risultato al client
-    res.json({ result: wine });
+
+    //logica di quantità per bottone aggiungi al carrello
+    const wineResponse = {
+      ...wine,
+      // se lo stock è 0 o meno, è esaurito
+      is_available: wine.stock_quantity > 0,
+      // Messaggio suggerito per il frontend
+      status_message: wine.stock_quantity > 0 ? `Disponibilità: ${wine.stock_quantity} bottiglie` : "Prodotto attualmente esaurito",
+    };
+    res.json({ result: wineResponse });
   });
 };
 
