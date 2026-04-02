@@ -204,5 +204,3 @@ const searchSql = (req, res) => {
     });
   });
 };
-
-module.exports = { index, indexPromo, indexPremi, indexPiuVenduti, indexPrimavera, show, searchSql };
