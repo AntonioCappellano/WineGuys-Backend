@@ -5,6 +5,7 @@ const app = express();
 // imports
 const winesRouter = require("./Routers/wines");
 const ordersRouter = require("./Routers/orders");
+const emailRouter = require("./Routers/email");
 
 // middlewares
 const cors = require("cors");
@@ -15,6 +16,7 @@ app.use(express.json());
 // Routers
 app.use("/vini", winesRouter);
 app.use("/ordini", ordersRouter);
+app.use("/email", emailRouter);
 
 // Error Handling
 const errorMiddlewares = require("./middlewares/errorsHandler");
