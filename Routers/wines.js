@@ -20,7 +20,5 @@ router.get("/primavera", wineController.indexPrimavera);
 // SHOW
 router.get("/:slug", wineController.show);
 
-// SEARCH
-router.get("/search", wineController.searchSql);
 
 module.exports = router;
