@@ -129,9 +129,9 @@ const show = (req, res) => {
     //logica di quantità per bottone aggiungi al carrello
     const wineResponse = {
       ...wine,
-      // se lo stock è 0 o meno, è esaurito
+      // è disponibile quando la quantità è maggiore di 0
       is_available: wine.stock_quantity > 0,
-      // Messaggio suggerito per il frontend
+
       status_message: wine.stock_quantity > 0 ? `Disponibilità: ${wine.stock_quantity} bottiglie` : "Prodotto attualmente esaurito",
     };
     res.json({ result: wineResponse });
