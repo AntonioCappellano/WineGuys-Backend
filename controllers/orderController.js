@@ -1,13 +1,17 @@
 const connection = require("../connections/connDb");
 
+//dati spedizione
+const shippingFee = 7.9;
+const shippingFreeSpend = 60.0;
+
 function postCheckout(req, res) {
   //prendo i dati dalla request - cart_items è l'array dei prodotti che sono nell'ordine
-  const { customer, total_price, shipping_fee, cart_items, discount_code } = req.body;
+  const { customer, total_price, cart_items, discount_code } = req.body;
 
   //CONTROLLO QUANTITà INIZIALE
   //se non arriva l'array dei prodotti o è vuoto do errore
   if (!cart_items || cart_items.length === 0) {
-    return res.json({ success: true, message: "Il carrello è vuoto" });
+    return res.json({ success: false, message: "Il carrello è vuoto" });
   }
 
   // mappo gli id dei prodotti in cart_items
@@ -69,7 +73,11 @@ function postCheckout(req, res) {
 
     //INSERIMENTO CLIENTE E ORDINE
     function startInsertion(price) {
-      //inserisco il cliente
+      //controllo spese di spedizione gratuite
+
+      const finalShippingFee = price >= shippingFreeSpend ? 0 : shippingFee;
+
+      //inserisco il CLIENTE
       const sqlCustomer = `INSERT INTO customers 
     (first_name, second_name, email, cellphone, 
      billing_street, billing_city, billing_postal_code, billing_country,
@@ -99,11 +107,11 @@ function postCheckout(req, res) {
         //recupero l'id del nuovo cliente assegnato da workbench
         const customerId = customerResult.insertId;
 
-        //inserisco l'ordine
+        //inserisco l'ORDINE
         const sqlOrder = `INSERT INTO orders (customer_id, date, total_price, status, shipping_fee) VALUES (?, NOW(), ?, 'pending', ?);`;
 
         //query di ricezione dati dell'ordine
-        connection.query(sqlOrder, [customerId, price, shipping_fee || 0], (err, orderResult) => {
+        connection.query(sqlOrder, [customerId, price, finalShippingFee || 0], (err, orderResult) => {
           if (err) return res.status(500).json({ message: "Errore inserimento ordine", error: err.sqlMessage });
 
           //recupero l'id del nuovo ordine assegnato da workbench
@@ -152,8 +160,12 @@ function postCheckout(req, res) {
                     success: true,
                     message: "Ordine completato con successo!",
                     newCustomerId: customerId,
-                    newOrderId: orderId,
-                    total: price.toFixed(2),
+                    order_summary: {
+                      newOrderId: orderId,
+                      total: price.toFixed(2),
+                      shipping: finalShippingFee.toFixed(2),
+                      final_total: (price + finalShippingFee).toFixed(2),
+                    },
                   });
                 }
               });
