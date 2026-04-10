@@ -59,6 +59,8 @@ function postCheckout(req, res) {
       validatedItems.push({
         ...item,
         price: realPrice,
+        original_price: wine.price,
+        promotion_price: wine.promotion_price,
       });
     }
 

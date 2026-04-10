@@ -38,7 +38,7 @@ const sendOrderConfirmation = async (orderData) => {
               .map(
                 (item) =>
                   `<li>
-                ${item.product_name} - Quantità: ${item.quantity} - Prezzo: €${item.promotion_price ? item.promotion_price : item.price}
+                ${item.product_name} - Quantità: ${item.quantity} - Prezzo: €${item.original_price} ${item.promotion_price ? `- Prezzo scontato: €${item.promotion_price}` : ""}
               </li>`,
               )
               .join("")}
@@ -53,6 +53,10 @@ const sendOrderConfirmation = async (orderData) => {
         <br>
         <p>Il team WineGuys 🍷</p>`,
   };
+
+  console.log("------ ANTEPRIMA HTML EMAIL CLIENTE ------");
+  console.log(mailOptions.html);
+  console.log("------------------------------------------");
 
   // usa createTransporter() invece di transporter
   await createTransporter().sendMail(mailOptions);
@@ -82,7 +86,7 @@ const sendOwnerNotification = async (orderData) => {
               .map(
                 (item) =>
                   `<li>
-            Nome prodotto:${item.product_name} (ID: ${item.product_id}) -  Quantità: ${item.quantity} - Prezzo: €${item.promotion_price ? item.promotion_price : item.price}
+            Nome prodotto:${item.product_name} (ID: ${item.product_id}) -  Quantità: ${item.quantity} - Prezzo: €${item.original_price} ${item.promotion_price ? `- Prezzo scontato: €${item.promotion_price}` : ""}
             </li>`,
               )
               .join("")}
